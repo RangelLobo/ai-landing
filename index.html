@@ -6,9 +6,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Landing Page IA</title>
 </head>
-<body style="font-family: sans-serif; text-align: center; padding: 50px;">
+<body style="font-family: sans-serif; text-align: center; padding: 40px; max-width: 500px; margin: auto;">
   <h1>Automatize Contratos com IA</h1>
-  <p>Teste nossa ferramenta de IA para geração de contratos e e-mails profissionais.</p>
-  <a href="/dashboard.html"><button style="padding: 10px 20px; font-size: 16px;">Testar Agora</button></a>
+  <p>Preencha o formulário e receba um contrato automatizado gerado por inteligência artificial.</p>
+
+  <form id="formulario">
+    <input type="text" name="nome" placeholder="Seu nome" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="email" name="email" placeholder="Seu email" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <input type="text" name="tipo" placeholder="Tipo de contrato (ex: prestação de serviço)" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+    <textarea name="mensagem" placeholder="Informações adicionais" rows="4" style="width: 100%; padding: 10px;"></textarea><br>
+    <button type="submit" style="padding: 10px 20px; margin-top: 10px;">Gerar Contrato</button>
+  </form>
+
+  <p id="resposta" style="margin-top: 20px;"></p>
+
+  <script>
+    document.getElementById("formulario").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const dados = {
+        nome: form.nome.value,
+        email: form.email.value,
+        tipo: form.tipo.value,
+        mensagem: form.mensagem.value
+      };
+
+      const resposta = document.getElementById("resposta");
+
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbwiISTowCntvdaA93EVNPKRRPAU8mJ6JmmU_sjHfGxhc__eE-10LquIVmoMXayQ8CUG/exec", {
+          method: "POST",
+          body: JSON.stringify(dados),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+        resposta.innerText = "Dados enviados com sucesso! Aguarde o contrato por e-mail.";
+        form.reset();
+      } catch (erro) {
+        resposta.innerText = "Erro ao enviar. Tente novamente.";
+      }
+    });
+  </script>
 </body>
 </html>
